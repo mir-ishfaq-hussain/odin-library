@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+      body {
+        font-family: "Roboto";
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      .input-holder {
+        display: flex;
+      }
+      .input-holder div {
+        margin-right: 50px;
+      }
+
+      .book-dialog::backdrop {
+        background-color: black;
+        opacity: 0.6;
+      }
+
+      .library-holder {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        width: 75%;
+        margin: 0 auto;
+        gap: 14px;
+      }
+      .library-holder div {
+        border-left: 4px solid rgb(25, 163, 156);
+        padding: 10px;
+        width: 200px;
+        height: 100px;
+        color: black;
+      }
+      .add-book {
+        display: flex;
+        justify-content: center;
+      }
+      #btn {
+        border-style: none;
+        padding: 7px;
+        background-color: rgb(25, 163, 156);
+        border-radius: 7px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .library-holder {
+        margin-top: 75px;
+      }
+      .book-title {
+        font-size: 1rem;
+      }
+      .book-author {
+        font-size: 10px;
+      }
+      .book-fw {
+        font-size: 10px;
+      }
+      .remove-book {
+        border-style: none;
+        border-radius: 7px;
+        background-color: rgb(25, 163, 156);
+        padding: 7px;
+        font-weight: bold;
+        color: white;
+      }
+
+      dialog {
+        border-style: none;
+        border-radius: 3px;
+      }
+
+      input[type="text"] {
+        border: 1px solid rgb(25, 163, 156);
+        border-radius: 3px;
+        height: 25px;
+      }
+
+      input[type="text"]:hover {
+        border: 1px solid rgb(25, 163, 156);
+      }
+      input[type="text"]:focus {
+        border: 1px solid rgb(25, 163, 156);
+        padding: 2px;
+        border-radius: 3px;
+      }
+
+      #forwhat {
+        width: 175px;
+        height: 25px;
+        border: 1px solid rgb(25, 163, 156);
+        border-radius: 3px;
+      }
+      .input-holder {
+        margin-bottom: 14px;
+        border-radius: 3px;
+      }
+      #close-dialog {
+        border-style: none;
+        padding: 7px;
+        background-color: rgb(25, 163, 156);
+        border-radius: 7px;
+        font-weight: bold;
+        color: white;
+      }
+      #confirm {
+        border-style: none;
+        padding: 7px;
+        background-color: rgb(25, 163, 156);
+        border-radius: 7px;
+        font-weight: bold;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="add-book">
+      <button id="btn">Add a book</button>
+    </div>
+    <div>
+      <dialog class="book-dialog">
+        <form action="">
+          <div class="input-holder">
+            <div>
+              <label for="author">Author</label
+              ><input type="text" name="author" id="author" />
+            </div>
+            <div>
+              <label for="title">Title</label
+              ><input type="text" name="title" id="title" />
+            </div>
+          </div>
+
+          <div class="input-holder">
+            <div>
+              <label for="forwhat"
+                >For What purpose you are taking this book</label
+              >
+              <select name="forwhat" id="forwhat">
+                <option value="read" selected>read</option>
+                <option value="lend">lend</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <button id="close-dialog" formmethod="dialog">cancel</button>
+            <button value="default" id="confirm">confirm</button>
+          </div>
+        </form>
+      </dialog>
+    </div>
+
+    <div class="library-holder"></div>
+
+    <script>
+      let books = [];
+      function book() {
+        const author = document.querySelector("#author");
+        const title = document.querySelector("#title");
+        const forwhat = document.querySelector("#forwhat");
+        books.push({
+          author: author.value,
+          title: title.value,
+          forwhat: forwhat.value,
+        });
+      }
+      function addBooksToUi() {
+        const bookHolder = document.querySelector(".library-holder");
+        const { title, author, forwhat } = books[books.length - 1];
+
+        const newBook = document.createElement("div");
+        const p = document.createElement("p");
+        const p2 = document.createElement("p");
+        const p3 = document.createElement("p");
+        p.className = "book-title";
+        p2.className = "book-author";
+        p3.className = "book-fw";
+        p.innerText = `Title:- ${title}`;
+        p2.innerText = `Author:- ${author}`;
+        p3.innerText = `${forwhat}`;
+        newBook.appendChild(p);
+        newBook.appendChild(p2);
+        newBook.appendChild(p3);
+
+        const button = document.createElement("button");
+        button.innerText = "Remove";
+        button.className = "remove-book";
+        newBook.append(button);
+        newBook.className = `book-${books.length - 1}`;
+
+        bookHolder.appendChild(newBook);
+      }
+
+      const dialog = document.querySelector("dialog");
+      const showButton = document.querySelector("#btn");
+      let removeButton;
+
+      showButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        dialog.showModal();
+      });
+
+      const c = document.querySelector("#confirm");
+      c.addEventListener("click", function (e) {
+        book();
+        addBooksToUi();
+        e.preventDefault();
+        dialog.close();
+      });
+    </script>
+  </body>
+</html>
